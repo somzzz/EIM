@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.provider.SyncStateContract;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,8 +13,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class PhoneDialer extends AppCompatActivity {
+
+    final public static int     CONTACTS_MANAGER_REQUEST_CODE = 2015;
 
     private final NumberButtonListener keyListener =  new NumberButtonListener();
     private final int [] keyIds = {R.id.button_0, R.id.button_1, R.id.button_2, R.id.button_3,
@@ -35,6 +39,9 @@ public class PhoneDialer extends AppCompatActivity {
 
         b = (ImageButton)findViewById(R.id.hangup_image_button);
         b.setOnClickListener(new HangupButtonListener());
+
+        b = (ImageButton)findViewById(R.id.contacts_button);
+        b.setOnClickListener(new ContactsButtonListener());
 
         for (int i = 0; i < keyIds.length; ++i) {
             Button button = (Button) findViewById(keyIds[i]);
@@ -89,6 +96,25 @@ public class PhoneDialer extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             finish();
+        }
+    }
+
+    private class ContactsButtonListener implements  View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+
+            Intent intent;
+            EditText phoneET = (EditText) findViewById(R.id.phone_number_edit_text);
+            String phoneNumber = phoneET.getText().toString();
+
+            if (phoneNumber.length() > 0) {
+                intent = new Intent("ro.pub.cs.systems.eim.lab04.contactsmanager.intent.action.ContactsManagerActivity");
+                intent.putExtra("ro.pub.cs.systems.eim.lab04.contactsmanager.PHONE_NUMBER_KEY", phoneNumber);
+                startActivityForResult(intent, CONTACTS_MANAGER_REQUEST_CODE);
+            } else {
+                Toast.makeText(getApplication(), getResources().getString(R.string.phone_error), Toast.LENGTH_LONG).show();
+            }
         }
     }
 
