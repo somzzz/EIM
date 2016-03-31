@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ColocviuSchelet</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_lab3">Lab3Activity</string>
+    <string name="title_activity_invoked">InvokedActivity</string>
+    <string name="title_activity_invoker">InvokerActivity</string>
+    <string name="title_activity_service">ServiceActivity</string>
+</resources>
